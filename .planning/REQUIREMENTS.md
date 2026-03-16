@@ -100,50 +100,50 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| IMPORT-01 | — | Pending |
-| IMPORT-02 | — | Pending |
-| IMPORT-03 | — | Pending |
-| IMPORT-04 | — | Pending |
-| ANALYSIS-01 | — | Pending |
-| ANALYSIS-02 | — | Pending |
-| ANALYSIS-03 | — | Pending |
-| ANALYSIS-04 | — | Pending |
-| ANALYSIS-05 | — | Pending |
-| SPOT-01 | — | Pending |
-| SPOT-02 | — | Pending |
-| SPOT-03 | — | Pending |
-| SPOT-04 | — | Pending |
-| SC-01 | — | Pending |
-| SC-02 | — | Pending |
-| MIX-01 | — | Pending |
-| MIX-02 | — | Pending |
-| MIX-03 | — | Pending |
-| MIX-04 | — | Pending |
-| MIX-05 | — | Pending |
-| TRANS-01 | — | Pending |
-| TRANS-02 | — | Pending |
-| TRANS-03 | — | Pending |
-| TRANS-04 | — | Pending |
-| TRANS-05 | — | Pending |
-| STEM-01 | — | Pending |
-| STEM-02 | — | Pending |
-| STEM-03 | — | Pending |
-| STEM-04 | — | Pending |
-| EDIT-01 | — | Pending |
-| EDIT-02 | — | Pending |
-| EDIT-03 | — | Pending |
-| EDIT-04 | — | Pending |
-| EDIT-05 | — | Pending |
-| EXPORT-01 | — | Pending |
-| EXPORT-02 | — | Pending |
-| EXPORT-03 | — | Pending |
-| EXPORT-04 | — | Pending |
+| IMPORT-01 | Phase 1 | Pending |
+| IMPORT-02 | Phase 4 | Pending |
+| IMPORT-03 | Phase 4 | Pending |
+| IMPORT-04 | Phase 1 | Pending |
+| ANALYSIS-01 | Phase 1 | Pending |
+| ANALYSIS-02 | Phase 1 | Pending |
+| ANALYSIS-03 | Phase 1 | Pending |
+| ANALYSIS-04 | Phase 1 | Pending |
+| ANALYSIS-05 | Phase 4 | Pending |
+| SPOT-01 | Phase 4 | Pending |
+| SPOT-02 | Phase 4 | Pending |
+| SPOT-03 | Phase 4 | Pending |
+| SPOT-04 | Phase 4 | Pending |
+| SC-01 | Phase 4 | Pending |
+| SC-02 | Phase 4 | Pending |
+| MIX-01 | Phase 2 | Pending |
+| MIX-02 | Phase 2 | Pending |
+| MIX-03 | Phase 2 | Pending |
+| MIX-04 | Phase 2 | Pending |
+| MIX-05 | Phase 2 | Pending |
+| TRANS-01 | Phase 2 | Pending |
+| TRANS-02 | Phase 2 | Pending |
+| TRANS-03 | Phase 2 | Pending |
+| TRANS-04 | Phase 2 | Pending |
+| TRANS-05 | Phase 2 | Pending |
+| STEM-01 | Phase 4 | Pending |
+| STEM-02 | Phase 4 | Pending |
+| STEM-03 | Phase 4 | Pending |
+| STEM-04 | Phase 4 | Pending |
+| EDIT-01 | Phase 1 | Pending |
+| EDIT-02 | Phase 2 | Pending |
+| EDIT-03 | Phase 2 | Pending |
+| EDIT-04 | Phase 2 | Pending |
+| EDIT-05 | Phase 1 | Pending |
+| EXPORT-01 | Phase 3 | Pending |
+| EXPORT-02 | Phase 3 | Pending |
+| EXPORT-03 | Phase 1 | Pending |
+| EXPORT-04 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 38 total
-- Mapped to phases: 0
-- Unmapped: 38 ⚠️
+- Mapped to phases: 38
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-03-16*
-*Last updated: 2026-03-16 after initial definition*
+*Last updated: 2026-03-16 after roadmap creation*
