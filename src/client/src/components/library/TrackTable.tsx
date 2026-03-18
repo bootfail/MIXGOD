@@ -10,11 +10,13 @@ import {
 import { useVirtualizer } from '@tanstack/react-virtual'
 import type { Track } from '@/types/track'
 import { useLibraryStore } from '@/stores/libraryStore'
+import { usePlayerStore } from '@/stores/playerStore'
 import { BpmDisplay } from '@/components/analysis/BpmDisplay'
 import { KeyDisplay } from '@/components/analysis/KeyDisplay'
 import { EnergyBar } from '@/components/analysis/EnergyBar'
 import { GenreDisplay } from '@/components/analysis/GenreDisplay'
 import { AnalysisStatus } from '@/components/analysis/AnalysisStatus'
+import { MiniWaveform } from '@/components/waveform/MiniWaveform'
 
 function formatDuration(seconds: number): string {
   const m = Math.floor(seconds / 60)
@@ -40,11 +42,7 @@ export function TrackTable() {
       id: 'waveform',
       header: '',
       size: 80,
-      cell: () => (
-        <div className="w-[72px] h-5 bg-bg-elevated rounded-sm overflow-hidden">
-          <div className="w-full h-full bg-gradient-to-r from-bg-hover to-bg-elevated opacity-50" />
-        </div>
-      ),
+      cell: (info) => <MiniWaveform trackId={info.row.original.serverId} />,
     }),
     columnHelper.accessor('title', {
       header: 'Title',
@@ -241,8 +239,7 @@ export function TrackTable() {
                     }}
                     onClick={() => selectTrack(row.original.serverId)}
                     onDoubleClick={() => {
-                      // Will connect to player in Plan 04
-                      selectTrack(row.original.serverId)
+                      usePlayerStore.getState().play(row.original.serverId)
                     }}
                   >
                     {row.getVisibleCells().map((cell) => (

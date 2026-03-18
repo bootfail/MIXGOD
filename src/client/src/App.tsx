@@ -7,6 +7,8 @@ import { TrackTable } from '@/components/library/TrackTable'
 import { TrackCardGrid } from '@/components/library/TrackCard'
 import { ViewToggle } from '@/components/library/ViewToggle'
 import { SmartPlaylists } from '@/components/library/SmartPlaylists'
+import { WaveformPanel } from '@/components/waveform/WaveformPanel'
+import { PlayerBar } from '@/components/player/PlayerBar'
 import { useLibraryStore } from '@/stores/libraryStore'
 import { api } from '@/services/api'
 import type { Track } from '@/types/track'
@@ -42,7 +44,6 @@ function App() {
   const addTracks = useLibraryStore((s) => s.addTracks)
 
   const handleTracksUploaded = useCallback(async (uploadedInfo: { serverId: string; title: string }[]) => {
-    // Fetch full track data after upload
     try {
       const allTracks = await api.getTracks()
       const newTracks: Track[] = allTracks.filter((t) =>
@@ -50,7 +51,6 @@ function App() {
       )
       addTracks(newTracks)
     } catch {
-      // If fetch fails, add minimal track data
       const minimalTracks: Track[] = uploadedInfo.map((u) => ({
         serverId: u.serverId,
         title: u.title,
@@ -87,8 +87,10 @@ function App() {
         <AppShell
           sidebar={<SmartPlaylists />}
           main={<LibraryPanel />}
+          bottom={<WaveformPanel />}
         />
       </DropZone>
+      <PlayerBar />
     </div>
   )
 }
