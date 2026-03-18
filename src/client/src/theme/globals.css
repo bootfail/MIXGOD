@@ -1,0 +1,124 @@
+/* Google Fonts imports */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* CSS custom properties from theme tokens */
+:root {
+  --bg-primary: #0a0a0f;
+  --bg-panel: #12121a;
+  --bg-elevated: #1a1a2e;
+  --bg-hover: #22223a;
+
+  --neon-cyan: #06b6d4;
+  --neon-magenta: #ec4899;
+  --neon-green: #10b981;
+  --neon-orange: #f97316;
+  --neon-red: #ef4444;
+  --neon-purple: #8b5cf6;
+  --neon-yellow: #eab308;
+  --neon-blue: #3b82f6;
+
+  --glow-sm: 0 0 4px;
+  --glow-md: 0 0 8px;
+  --glow-lg: 0 0 16px;
+  --glow-xl: 0 0 24px;
+
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* Glow utility classes */
+.glow-cyan {
+  box-shadow: var(--glow-md) var(--neon-cyan);
+}
+
+.glow-magenta {
+  box-shadow: var(--glow-md) var(--neon-magenta);
+}
+
+.glow-green {
+  box-shadow: var(--glow-md) var(--neon-green);
+}
+
+.glow-orange {
+  box-shadow: var(--glow-md) var(--neon-orange);
+}
+
+.glow-red {
+  box-shadow: var(--glow-md) var(--neon-red);
+}
+
+.glow-purple {
+  box-shadow: var(--glow-md) var(--neon-purple);
+}
+
+.glow-yellow {
+  box-shadow: var(--glow-md) var(--neon-yellow);
+}
+
+.glow-blue {
+  box-shadow: var(--glow-md) var(--neon-blue);
+}
+
+/* Neon shimmer skeleton animation */
+@keyframes neon-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.neon-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--bg-panel) 25%,
+    var(--bg-elevated) 37%,
+    var(--bg-panel) 63%
+  );
+  background-size: 200% 100%;
+  animation: neon-shimmer 2s linear infinite;
+}
+
+/* Glow pulse animation */
+@keyframes glow-pulse-anim {
+  0%, 100% {
+    opacity: 1;
+    filter: brightness(1);
+  }
+  50% {
+    opacity: 0.7;
+    filter: brightness(1.3);
+  }
+}
+
+.glow-pulse {
+  animation: glow-pulse-anim 1.5s ease-in-out infinite;
+}
+
+/* Neon text gradient */
+.neon-gradient-text {
+  background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-hover);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
+}

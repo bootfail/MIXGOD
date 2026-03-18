@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./theme/globals.css";
 
 @theme {
   /* Background colors */
