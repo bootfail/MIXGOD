@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Channels;
+using MixGod.Api.BackgroundJobs;
 using MixGod.Api.Models;
 using MixGod.Api.Services;
 
@@ -43,6 +44,13 @@ var analysisChannel = Channel.CreateUnbounded<AnalysisJob>(new UnboundedChannelO
 builder.Services.AddSingleton(analysisChannel);
 builder.Services.AddSingleton(svc => svc.GetRequiredService<Channel<AnalysisJob>>().Reader);
 builder.Services.AddSingleton(svc => svc.GetRequiredService<Channel<AnalysisJob>>().Writer);
+
+// Analysis services
+builder.Services.AddSingleton<IAnalysisService, AnalysisService>();
+builder.Services.AddSingleton<IPeakService, PeakService>();
+
+// Background analysis queue processor
+builder.Services.AddHostedService<AnalysisQueueProcessor>();
 
 // Configure max request body size for batch uploads (500MB)
 builder.WebHost.ConfigureKestrel(options =>

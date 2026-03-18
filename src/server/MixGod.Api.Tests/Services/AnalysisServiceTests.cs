@@ -60,7 +60,7 @@ public class AnalysisServiceTests
         var json = "not valid json";
 
         // Act & Assert
-        Assert.Throws<JsonException>(() => AnalysisService.ParseAnalyzerOutput(json));
+        Assert.ThrowsAny<JsonException>(() => AnalysisService.ParseAnalyzerOutput(json));
     }
 
     [Fact]
