@@ -37,6 +37,23 @@ Plans:
 - [x] 01-03-PLAN.md -- Frontend: neon-dark theme, app shell, upload, track library table
 - [x] 01-04-PLAN.md -- Frontend: waveform, player, project persistence, keyboard shortcuts
 
+### Phase 01.1: SoundCloud/YouTube Import (INSERTED)
+
+**Goal:** Users can paste YouTube or SoundCloud URLs and get audio downloaded into the track library, with thumbnails, source attribution, and automatic analysis
+**Depends on:** Phase 1
+**Requirements**: IMPORT-02
+**Success Criteria** (what must be TRUE):
+  1. User can paste a YouTube or SoundCloud URL and the audio is downloaded and imported into the track library
+  2. Downloaded tracks show title/artist auto-parsed from video title, with thumbnail and source platform icon
+  3. Download progress is visible inline (percentage + ETA) with global batch progress
+  4. After download, tracks automatically enter the existing BPM/key/energy/genre analysis pipeline
+  5. Download failures show meaningful error messages with retry capability
+**Plans:** 2 plans
+
+Plans:
+- [ ] 01.1-01-PLAN.md -- Backend: DownloadService (yt-dlp wrapper), download queue, import endpoint, thumbnail serving
+- [ ] 01.1-02-PLAN.md -- Frontend: ImportDialog, URL validation, library table enhancements (thumbnails, source icons, download progress)
+
 ### Phase 2: AI Mix Engine + Timeline Editor
 **Goal**: AI generates a complete mix proposal with professional transitions that the user can review, edit, and refine on a visual timeline
 **Depends on**: Phase 1
@@ -85,11 +102,12 @@ Plans:
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4
+Phases execute in numeric order: 1 -> 1.1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Track Library + Analysis Pipeline | 4/4 | Verifying |  |
+| 1.1. SoundCloud/YouTube Import | 0/2 | Planning |  |
 | 2. AI Mix Engine + Timeline Editor | 0/3 | Not started | - |
 | 3. Server Render + Export | 0/1 | Not started | - |
 | 4. Integrations + Stems + Mashups | 0/2 | Not started | - |
