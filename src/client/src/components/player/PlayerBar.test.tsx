@@ -12,6 +12,10 @@ vi.mock('@/stores/playerStore', () => ({
         duration: 0,
         volume: 0.8,
         isMuted: false,
+        togglePlay: vi.fn(),
+        setVolume: vi.fn(),
+        toggleMute: vi.fn(),
+        getCurrentTrack: () => undefined,
       }
       return selector(state)
     }),
@@ -21,7 +25,7 @@ vi.mock('@/stores/playerStore', () => ({
         togglePlay: vi.fn(),
         setVolume: vi.fn(),
         toggleMute: vi.fn(),
-        getCurrentTrack: vi.fn(() => undefined),
+        getCurrentTrack: () => undefined,
       })),
       subscribe: vi.fn(() => vi.fn()),
     }
