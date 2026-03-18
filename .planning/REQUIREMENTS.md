@@ -57,7 +57,7 @@
 
 ### Visual Editor
 
-- [ ] **EDIT-01**: User sees all tracks on a waveform timeline with zoom/scroll
+- [x] **EDIT-01**: User sees all tracks on a waveform timeline with zoom/scroll
 - [ ] **EDIT-02**: User can edit transition type, duration, and parameters per transition point
 - [ ] **EDIT-03**: User can create loops from source tracks and place them in the mix
 - [ ] **EDIT-04**: User can drag & drop to reorder tracks in the mix
@@ -129,7 +129,7 @@
 | STEM-02 | Phase 4 | Pending |
 | STEM-03 | Phase 4 | Pending |
 | STEM-04 | Phase 4 | Pending |
-| EDIT-01 | Phase 1 | Pending |
+| EDIT-01 | Phase 1 | Complete |
 | EDIT-02 | Phase 2 | Pending |
 | EDIT-03 | Phase 2 | Pending |
 | EDIT-04 | Phase 2 | Pending |
