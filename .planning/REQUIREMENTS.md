@@ -14,10 +14,10 @@
 
 ### Audio Analysis
 
-- [ ] **ANALYSIS-01**: System detects BPM per track with octave-correction (handles 85 vs 170 BPM for hardstyle)
-- [ ] **ANALYSIS-02**: System detects musical key per track for harmonic mixing
-- [ ] **ANALYSIS-03**: System maps energy level per track (1-10 scale)
-- [ ] **ANALYSIS-04**: System classifies genre per track (house, hardstyle, hardcore, frenchcore, party, latin, urban, etc.)
+- [x] **ANALYSIS-01**: System detects BPM per track with octave-correction (handles 85 vs 170 BPM for hardstyle)
+- [x] **ANALYSIS-02**: System detects musical key per track for harmonic mixing
+- [x] **ANALYSIS-03**: System maps energy level per track (1-10 scale)
+- [x] **ANALYSIS-04**: System classifies genre per track (house, hardstyle, hardcore, frenchcore, party, latin, urban, etc.)
 - [ ] **ANALYSIS-05**: System fetches Spotify audio features (danceability, energy, valence, tempo, key) as cross-reference
 
 ### Spotify Integration
@@ -104,10 +104,10 @@
 | IMPORT-02 | Phase 4 | Pending |
 | IMPORT-03 | Phase 4 | Pending |
 | IMPORT-04 | Phase 1 | Pending |
-| ANALYSIS-01 | Phase 1 | Pending |
-| ANALYSIS-02 | Phase 1 | Pending |
-| ANALYSIS-03 | Phase 1 | Pending |
-| ANALYSIS-04 | Phase 1 | Pending |
+| ANALYSIS-01 | Phase 1 | Complete (01-01) |
+| ANALYSIS-02 | Phase 1 | Complete (01-01) |
+| ANALYSIS-03 | Phase 1 | Complete (01-01) |
+| ANALYSIS-04 | Phase 1 | Complete (01-01) |
 | ANALYSIS-05 | Phase 4 | Pending |
 | SPOT-01 | Phase 4 | Pending |
 | SPOT-02 | Phase 4 | Pending |
@@ -146,4 +146,4 @@
 
 ---
 *Requirements defined: 2026-03-16*
-*Last updated: 2026-03-16 after roadmap creation*
+*Last updated: 2026-03-18 after 01-01 plan completion*
