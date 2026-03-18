@@ -29,12 +29,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. User can see waveforms for all tracks and click to preview any track in the browser
   4. User can save a project and reload it later with all tracks and analysis intact
   5. Batch upload of 30+ tracks completes analysis within minutes with visible progress feedback
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md -- Scaffold all projects + Python Essentia analysis pipeline (BPM/key/energy/genre)
+- [ ] 01-02-PLAN.md -- .NET backend: upload, storage, analysis queue, peak generation
+- [ ] 01-03-PLAN.md -- Frontend: neon-dark theme, app shell, upload, track library table
+- [ ] 01-04-PLAN.md -- Frontend: waveform, player, project persistence, keyboard shortcuts
 
 ### Phase 2: AI Mix Engine + Timeline Editor
 **Goal**: AI generates a complete mix proposal with professional transitions that the user can review, edit, and refine on a visual timeline
@@ -88,7 +89,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Track Library + Analysis Pipeline | 0/3 | Not started | - |
+| 1. Track Library + Analysis Pipeline | 0/4 | Planning complete | - |
 | 2. AI Mix Engine + Timeline Editor | 0/3 | Not started | - |
 | 3. Server Render + Export | 0/1 | Not started | - |
 | 4. Integrations + Stems + Mashups | 0/2 | Not started | - |
