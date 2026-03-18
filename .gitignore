@@ -1,0 +1,25 @@
+# Audio storage (user uploads, server-side)
+audio-storage/
+
+# Node
+node_modules/
+dist/
+
+# .NET
+bin/
+obj/
+
+# Python
+__pycache__/
+.venv/
+*.pyc
+*.pyo
+
+# IDE
+.vs/
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+@theme {
+  /* Background colors */
+  --color-bg-primary: #0a0a0f;
+  --color-bg-panel: #12121a;
+  --color-bg-elevated: #1a1a2e;
+  --color-bg-hover: #22223a;
+
+  /* Neon accent colors */
+  --color-neon-cyan: #06b6d4;
+  --color-neon-magenta: #ec4899;
+  --color-neon-green: #10b981;
+  --color-neon-orange: #f97316;
+  --color-neon-red: #ef4444;
+  --color-neon-purple: #8b5cf6;
+  --color-neon-yellow: #eab308;
+  --color-neon-blue: #3b82f6;
+
+  /* Font families */
+  --font-ui: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Glow box shadows */
+  --shadow-glow-sm: 0 0 4px;
+  --shadow-glow-md: 0 0 8px;
+  --shadow-glow-lg: 0 0 16px;
+  --shadow-glow-xl: 0 0 24px;
+
+  /* Animation durations */
+  --animate-panel-slide: panel-slide 200ms ease-in-out;
+  --animate-glow-pulse: glow-pulse 1.5s ease-in-out infinite;
+  --animate-shimmer: shimmer 2s linear infinite;
+}
+
+@keyframes panel-slide {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-bg-primary);
+  color: #e2e8f0;
+  font-family: var(--font-ui);
+}
+
+#root {
+  min-height: 100vh;
+}
