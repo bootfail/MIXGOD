@@ -1,9 +1,9 @@
 namespace MixGod.Api.Models;
 
-public record Project
+public class Project
 {
-    public int Id { get; init; }
-    public string Name { get; init; } = string.Empty;
-    public DateTime CreatedAt { get; init; }
-    public DateTime UpdatedAt { get; init; }
+    public string Id { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
 }
