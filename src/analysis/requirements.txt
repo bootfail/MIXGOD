@@ -1,0 +1,3 @@
+essentia
+essentia-tensorflow
+pytest
