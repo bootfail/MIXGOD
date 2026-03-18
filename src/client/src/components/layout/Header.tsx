@@ -1,8 +1,21 @@
-import { useState } from 'react'
+import { useProjectStore } from '@/stores/projectStore'
+import { useState, useEffect } from 'react'
 
-export function Header() {
-  const [projectName, setProjectName] = useState('Untitled Project')
+interface HeaderProps {
+  onOpenProjectSwitcher: () => void
+}
+
+export function Header({ onOpenProjectSwitcher }: HeaderProps) {
+  const currentProjectId = useProjectStore((s) => s.currentProjectId)
+  const projects = useProjectStore((s) => s.projects)
+  const project = projects.find((p) => p.id === currentProjectId)
+
+  const [projectName, setProjectName] = useState(project?.name ?? 'Untitled Project')
   const [isEditing, setIsEditing] = useState(false)
+
+  useEffect(() => {
+    setProjectName(project?.name ?? 'Untitled Project')
+  }, [project?.name])
 
   return (
     <header className="flex items-center h-12 px-4 bg-bg-primary border-b border-bg-elevated shrink-0"
@@ -37,6 +50,7 @@ export function Header() {
       <button
         className="text-gray-500 hover:text-neon-cyan transition-colors p-1.5 rounded hover:bg-bg-hover"
         title="Switch project"
+        onClick={onOpenProjectSwitcher}
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5">
           <rect x="2" y="2" width="5" height="5" rx="1" />

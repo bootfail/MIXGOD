@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Header } from '@/components/layout/Header'
 import { AppShell } from '@/components/layout/AppShell'
 import { DropZone } from '@/components/upload/DropZone'
@@ -9,7 +9,12 @@ import { ViewToggle } from '@/components/library/ViewToggle'
 import { SmartPlaylists } from '@/components/library/SmartPlaylists'
 import { WaveformPanel } from '@/components/waveform/WaveformPanel'
 import { PlayerBar } from '@/components/player/PlayerBar'
+import { ProjectSwitcher } from '@/components/project/ProjectSwitcher'
+import { ExportDialog } from '@/components/project/ExportDialog'
+import { ShortcutOverlay } from '@/components/shortcuts/ShortcutOverlay'
+import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts'
 import { useLibraryStore } from '@/stores/libraryStore'
+import { useProjectStore } from '@/stores/projectStore'
 import { api } from '@/services/api'
 import type { Track } from '@/types/track'
 
@@ -42,6 +47,21 @@ function LibraryPanel() {
 
 function App() {
   const addTracks = useLibraryStore((s) => s.addTracks)
+  const initProject = useProjectStore((s) => s.init)
+
+  const [showProjectSwitcher, setShowProjectSwitcher] = useState(false)
+  const [showExport, setShowExport] = useState(false)
+  const [showShortcuts, setShowShortcuts] = useState(false)
+
+  // Initialize project on mount
+  useEffect(() => {
+    void initProject()
+  }, [initProject])
+
+  useKeyboardShortcuts({
+    onExport: useCallback(() => setShowExport(true), []),
+    onToggleShortcuts: useCallback(() => setShowShortcuts((s) => !s), []),
+  })
 
   const handleTracksUploaded = useCallback(async (uploadedInfo: { serverId: string; title: string }[]) => {
     try {
@@ -81,7 +101,7 @@ function App() {
 
   return (
     <div className="flex flex-col h-screen bg-bg-primary">
-      <Header />
+      <Header onOpenProjectSwitcher={() => setShowProjectSwitcher(true)} />
       <UploadProgress />
       <DropZone onTracksUploaded={handleTracksUploaded}>
         <AppShell
@@ -91,6 +111,10 @@ function App() {
         />
       </DropZone>
       <PlayerBar />
+
+      {showProjectSwitcher && <ProjectSwitcher onClose={() => setShowProjectSwitcher(false)} />}
+      {showExport && <ExportDialog onClose={() => setShowExport(false)} />}
+      {showShortcuts && <ShortcutOverlay onClose={() => setShowShortcuts(false)} />}
     </div>
   )
 }
