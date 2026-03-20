@@ -38,6 +38,8 @@ describe('Database', () => {
       analysisStatus: 'done' as const,
       analysisConfidence: 0.9,
       userOverrides: {},
+      sourceType: 'upload' as const,
+      downloadStatus: 'none' as const,
     }
 
     const record = trackToRecord(track, 42)
@@ -111,6 +113,10 @@ describe('Database', () => {
       analysisStatus: 'done' as const,
       analysisConfidence: 0.92,
       userOverrides: { bpm: 171 },
+      sourceType: 'youtube' as const,
+      downloadStatus: 'done' as const,
+      sourceUrl: 'https://youtube.com/watch?v=abc',
+      thumbnailUrl: 'http://localhost:5000/api/tracks/xyz/thumbnail',
     }
 
     const record = trackToRecord(original, 1)

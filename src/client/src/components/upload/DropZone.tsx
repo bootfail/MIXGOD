@@ -1,7 +1,8 @@
-import { useCallback, type ReactNode } from 'react'
+import { useCallback, useState, type ReactNode } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { api } from '@/services/api'
 import { useAnalysisStore } from '@/stores/analysisStore'
+import { ImportDialog } from '@/components/import/ImportDialog'
 
 const ACCEPTED_TYPES: Record<string, string[]> = {
   'audio/mpeg': ['.mp3'],
@@ -18,6 +19,7 @@ interface DropZoneProps {
 
 export function DropZone({ children, onTracksUploaded }: DropZoneProps) {
   const startPolling = useAnalysisStore((s) => s.startPolling)
+  const [showImportDialog, setShowImportDialog] = useState(false)
 
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     if (acceptedFiles.length === 0) return
@@ -63,7 +65,22 @@ export function DropZone({ children, onTracksUploaded }: DropZoneProps) {
 
       {children}
 
-      <div className="absolute bottom-4 right-4 z-10">
+      <div className="absolute bottom-4 right-4 z-10 flex gap-2">
+        <button
+          onClick={() => setShowImportDialog(true)}
+          className="px-4 py-2 text-sm font-medium rounded-lg bg-bg-elevated text-gray-300 hover:text-neon-magenta border border-bg-hover hover:border-neon-magenta/50 transition-all"
+          style={{ boxShadow: '0 0 8px rgba(236, 72, 153, 0)' }}
+          onMouseEnter={(e) => { e.currentTarget.style.boxShadow = '0 0 8px rgba(236, 72, 153, 0.3)' }}
+          onMouseLeave={(e) => { e.currentTarget.style.boxShadow = '0 0 8px rgba(236, 72, 153, 0)' }}
+        >
+          <span className="flex items-center gap-1.5">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+              <path d="M7 1v12M3 5l4-4 4 4" />
+              <path d="M1 10v2a1 1 0 001 1h10a1 1 0 001-1v-2" />
+            </svg>
+            Import from URL
+          </span>
+        </button>
         <button
           onClick={open}
           className="px-4 py-2 text-sm font-medium rounded-lg bg-bg-elevated text-gray-300 hover:text-neon-cyan border border-bg-hover hover:border-neon-cyan/50 transition-all"
@@ -74,6 +91,8 @@ export function DropZone({ children, onTracksUploaded }: DropZoneProps) {
           Browse files
         </button>
       </div>
+
+      <ImportDialog open={showImportDialog} onClose={() => setShowImportDialog(false)} />
     </div>
   )
 }

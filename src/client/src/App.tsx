@@ -94,6 +94,8 @@ function App() {
         analysisStatus: 'queued',
         analysisConfidence: 0,
         userOverrides: {},
+        sourceType: 'upload',
+        downloadStatus: 'none',
       }))
       addTracks(minimalTracks)
     }
