@@ -1,5 +1,7 @@
+using System.Text.RegularExpressions;
 using System.Threading.Channels;
 using Microsoft.AspNetCore.Mvc;
+using MixGod.Api.BackgroundJobs;
 using MixGod.Api.Models;
 using MixGod.Api.Services;
 
@@ -12,15 +14,89 @@ public class TracksController : ControllerBase
     private readonly IAudioStorageService _storage;
     private readonly ITrackStore _trackStore;
     private readonly ChannelWriter<AnalysisJob> _analysisQueue;
+    private readonly ChannelWriter<DownloadJob> _downloadQueue;
+
+    // URL validation patterns for YouTube and SoundCloud
+    private static readonly Regex YoutubeRegex = new(
+        @"^https?://(www\.)?(youtube\.com/(watch\?v=|shorts/)|youtu\.be/|music\.youtube\.com/watch\?v=)",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    private static readonly Regex SoundCloudRegex = new(
+        @"^https?://(www\.|m\.)?soundcloud\.com/[^/]+/.+",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     public TracksController(
         IAudioStorageService storage,
         ITrackStore trackStore,
-        ChannelWriter<AnalysisJob> analysisQueue)
+        ChannelWriter<AnalysisJob> analysisQueue,
+        ChannelWriter<DownloadJob> downloadQueue)
     {
         _storage = storage;
         _trackStore = trackStore;
         _analysisQueue = analysisQueue;
+        _downloadQueue = downloadQueue;
+    }
+
+    /// <summary>
+    /// Import tracks from YouTube or SoundCloud URLs.
+    /// Returns immediately with track IDs; downloads happen in background.
+    /// </summary>
+    [HttpPost("import")]
+    public async Task<IActionResult> Import([FromBody] ImportRequest request)
+    {
+        if (request.Urls == null || request.Urls.Count == 0)
+            return BadRequest(new { error = "No URLs provided" });
+
+        var createdTracks = new List<object>();
+        var warnings = new List<string>();
+
+        foreach (var url in request.Urls)
+        {
+            // Detect source type
+            string? sourceType = null;
+            if (YoutubeRegex.IsMatch(url))
+                sourceType = "youtube";
+            else if (SoundCloudRegex.IsMatch(url))
+                sourceType = "soundcloud";
+
+            if (sourceType == null)
+            {
+                warnings.Add($"Invalid URL skipped: {url}. Only YouTube and SoundCloud URLs are supported.");
+                continue;
+            }
+
+            // Check for duplicate URLs
+            var existingTracks = _trackStore.GetAll();
+            var duplicate = existingTracks.FirstOrDefault(t => t.SourceUrl == url);
+            if (duplicate != null)
+            {
+                warnings.Add($"Duplicate URL: {url} (already imported as track {duplicate.Id}). Importing again.");
+            }
+
+            var trackId = Guid.NewGuid().ToString("N")[..12];
+
+            var track = new Track
+            {
+                Id = trackId,
+                SourceUrl = url,
+                SourceType = sourceType,
+                Title = "Downloading...",
+                DateAdded = DateTime.UtcNow,
+                DownloadStatus = DownloadStatus.Queued,
+                AnalysisStatus = AnalysisStatus.Queued
+            };
+
+            _trackStore.Add(track);
+
+            await _downloadQueue.WriteAsync(new DownloadJob(trackId, url, sourceType));
+
+            createdTracks.Add(new { id = trackId, sourceUrl = url, sourceType, status = "queued" });
+        }
+
+        if (createdTracks.Count == 0)
+            return BadRequest(new { error = "No valid URLs provided", warnings });
+
+        return Accepted(new { tracks = createdTracks, warnings });
     }
 
     /// <summary>
@@ -98,7 +174,7 @@ public class TracksController : ControllerBase
     }
 
     /// <summary>
-    /// Lightweight polling endpoint for analysis status.
+    /// Lightweight polling endpoint for analysis and download status.
     /// </summary>
     [HttpGet("{id}/status")]
     public IActionResult GetStatus(string id)
@@ -106,6 +182,8 @@ public class TracksController : ControllerBase
         var track = _trackStore.Get(id);
         if (track == null)
             return NotFound(new { error = $"Track {id} not found" });
+
+        var progress = DownloadQueueProcessor.GetProgress(id);
 
         return Ok(new
         {
@@ -116,8 +194,37 @@ public class TracksController : ControllerBase
             key = track.Key,
             energy = track.Energy,
             genrePrimary = track.GenrePrimary,
-            duration = track.Duration
+            duration = track.Duration,
+            downloadStatus = track.DownloadStatus.ToString().ToLowerInvariant(),
+            downloadProgress = progress?.Percent,
+            downloadEta = progress?.Eta
         });
+    }
+
+    /// <summary>
+    /// Serve thumbnail image for a track (downloaded from YouTube/SoundCloud).
+    /// </summary>
+    [HttpGet("{id}/thumbnail")]
+    public IActionResult GetThumbnail(string id)
+    {
+        var track = _trackStore.Get(id);
+        if (track == null)
+            return NotFound(new { error = $"Track {id} not found" });
+
+        if (string.IsNullOrEmpty(track.ThumbnailPath) || !System.IO.File.Exists(track.ThumbnailPath))
+            return NotFound(new { error = $"No thumbnail available for track {id}" });
+
+        var ext = Path.GetExtension(track.ThumbnailPath).ToLowerInvariant();
+        var contentType = ext switch
+        {
+            ".jpg" or ".jpeg" => "image/jpeg",
+            ".png" => "image/png",
+            ".webp" => "image/webp",
+            _ => "application/octet-stream"
+        };
+
+        var stream = System.IO.File.OpenRead(track.ThumbnailPath);
+        return File(stream, contentType);
     }
 
     /// <summary>
@@ -206,6 +313,11 @@ public class TracksController : ControllerBase
 
         return NoContent();
     }
+}
+
+public class ImportRequest
+{
+    public List<string> Urls { get; set; } = new();
 }
 
 public class TrackUpdateDto

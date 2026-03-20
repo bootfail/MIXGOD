@@ -52,6 +52,22 @@ builder.Services.AddSingleton<IPeakService, PeakService>();
 // Background analysis queue processor
 builder.Services.AddHostedService<AnalysisQueueProcessor>();
 
+// Download queue channel (unbounded for batch URL imports)
+var downloadChannel = Channel.CreateUnbounded<DownloadJob>(new UnboundedChannelOptions
+{
+    SingleReader = false,
+    SingleWriter = false
+});
+builder.Services.AddSingleton(downloadChannel);
+builder.Services.AddSingleton(svc => svc.GetRequiredService<Channel<DownloadJob>>().Reader);
+builder.Services.AddSingleton(svc => svc.GetRequiredService<Channel<DownloadJob>>().Writer);
+
+// Download services
+builder.Services.AddSingleton<IDownloadService, DownloadService>();
+
+// Background download queue processor
+builder.Services.AddHostedService<DownloadQueueProcessor>();
+
 // Configure max request body size for batch uploads (500MB)
 builder.WebHost.ConfigureKestrel(options =>
 {
@@ -64,6 +80,18 @@ var app = builder.Build();
 var storagePath = app.Configuration.GetValue<string>("AudioStorage:Path")
     ?? Path.Combine(Directory.GetCurrentDirectory(), "audio-storage");
 Directory.CreateDirectory(storagePath);
+
+// Check yt-dlp availability (non-blocking warning)
+var downloadService = app.Services.GetRequiredService<IDownloadService>();
+if (downloadService.IsAvailable())
+{
+    app.Logger.LogInformation("yt-dlp found and available for URL imports");
+}
+else
+{
+    app.Logger.LogWarning("yt-dlp not found on PATH. URL import will not work until yt-dlp is installed. " +
+        "Install via: winget install yt-dlp or pip install yt-dlp");
+}
 
 // Configure pipeline
 if (app.Environment.IsDevelopment())
