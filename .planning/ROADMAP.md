@@ -48,7 +48,7 @@ Plans:
   3. Download progress is visible inline (percentage + ETA) with global batch progress
   4. After download, tracks automatically enter the existing BPM/key/energy/genre analysis pipeline
   5. Download failures show meaningful error messages with retry capability
-**Plans:** 2 plans
+**Plans:** 1/2 plans executed
 
 Plans:
 - [ ] 01.1-01-PLAN.md -- Backend: DownloadService (yt-dlp wrapper), download queue, import endpoint, thumbnail serving

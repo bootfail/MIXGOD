@@ -8,7 +8,7 @@
 ### Audio Import
 
 - [x] **IMPORT-01**: User can upload audio files via drag & drop (MP3, WAV, FLAC)
-- [ ] **IMPORT-02**: User can download audio from YouTube/SoundCloud URL (via yt-dlp)
+- [x] **IMPORT-02**: User can download audio from YouTube/SoundCloud URL (via yt-dlp)
 - [ ] **IMPORT-03**: User can import a Spotify playlist to load track metadata and order
 - [x] **IMPORT-04**: User can batch-import multiple files at once
 
@@ -101,7 +101,7 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | IMPORT-01 | Phase 1 | Complete |
-| IMPORT-02 | Phase 4 | Pending |
+| IMPORT-02 | Phase 4 | Complete |
 | IMPORT-03 | Phase 4 | Pending |
 | IMPORT-04 | Phase 1 | Complete |
 | ANALYSIS-01 | Phase 1 | Complete (01-01) |

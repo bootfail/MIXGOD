@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: verifying
-stopped_at: Phase 01.1 context gathered
-last_updated: "2026-03-18T15:01:26.625Z"
+stopped_at: Completed 01.1-01-PLAN.md
+last_updated: "2026-03-20T08:13:15.707Z"
 last_activity: 2026-03-18 -- Completed 01-04-PLAN.md
 progress:
   total_phases: 5
   completed_phases: 1
-  total_plans: 4
-  completed_plans: 4
+  total_plans: 6
+  completed_plans: 5
   percent: 100
 ---
 
@@ -54,6 +54,7 @@ Progress: [██████████] 100% (plans)
 | Phase 01 P02 | 7min | 2 tasks | 19 files |
 | Phase 01 P03 | 7min | 3 tasks | 21 files |
 | Phase 01 P04 | 8min | 2 tasks | 16 files |
+| Phase 01.1 P01 | 3min | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,9 @@ Recent decisions affecting current work:
 - [Phase 01-04]: MiniWaveform uses raw canvas for performance with 100+ rows
 - [Phase 01-04]: Dexie auto-save with 2s debounce on libraryStore subscription
 - [Phase 01-04]: Keyboard shortcuts skip input/textarea to prevent inline edit conflicts
+- [Phase 01.1]: ConcurrentDictionary for volatile download progress (not in Track model)
+- [Phase 01.1]: 2 concurrent downloads max via SemaphoreSlim (bandwidth constraint)
+- [Phase 01.1]: Title parsing: strip video suffixes, split on dash for Artist - Title
 
 ### Roadmap Evolution
 
@@ -95,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-03-18T15:01:26.622Z
-Stopped at: Phase 01.1 context gathered
-Resume file: .planning/phases/01.1-soundcloud-youtube-import/01.1-CONTEXT.md
+Last session: 2026-03-20T08:13:15.704Z
+Stopped at: Completed 01.1-01-PLAN.md
+Resume file: None
