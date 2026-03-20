@@ -8,6 +8,15 @@ public enum AnalysisStatus
     Error
 }
 
+public enum DownloadStatus
+{
+    None,
+    Queued,
+    Downloading,
+    Done,
+    Error
+}
+
 public class Track
 {
     public string Id { get; set; } = string.Empty;
@@ -35,4 +44,10 @@ public class Track
     public double AnalysisConfidence { get; set; }
     public string? ErrorMessage { get; set; }
     public Dictionary<string, object>? UserOverrides { get; set; }
+
+    // Import/download fields
+    public string? SourceUrl { get; set; }
+    public string SourceType { get; set; } = "upload"; // "upload" | "youtube" | "soundcloud"
+    public string? ThumbnailPath { get; set; }
+    public DownloadStatus DownloadStatus { get; set; } = DownloadStatus.None;
 }
