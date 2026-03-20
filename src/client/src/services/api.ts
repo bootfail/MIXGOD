@@ -1,10 +1,22 @@
-import type { Track } from '@/types/track'
+import type { Track, SourceType, DownloadStatus } from '@/types/track'
 
 const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000'
 
-interface TrackStatusResponse {
-  analysisStatus: string
-  analysisResult: {
+export interface TrackStatusResponse {
+  id: string
+  status: string
+  errorMessage: string | null
+  bpm: number
+  key: string
+  energy: number
+  genrePrimary: string
+  duration: number
+  downloadStatus: string
+  downloadProgress: number | null
+  downloadEta: string | null
+  // Legacy nested result (kept for backward compat)
+  analysisStatus?: string
+  analysisResult?: {
     bpmRaw: number
     bpmCorrected: number
     bpmWasCorrected: boolean
@@ -17,6 +29,16 @@ interface TrackStatusResponse {
     genreConfidence: number
     duration: number
   } | null
+}
+
+interface ImportResponse {
+  tracks: Array<{
+    id: string
+    sourceUrl: string
+    sourceType: string
+    status: string
+  }>
+  warnings: string[]
 }
 
 interface ApiTrack {
@@ -40,6 +62,11 @@ interface ApiTrack {
   genreConfidence: number
   analysisConfidence: number
   dateAdded: string
+  // Import/download fields
+  sourceUrl?: string
+  sourceType?: string
+  thumbnailPath?: string
+  downloadStatus?: string
 }
 
 function mapApiTrack(t: ApiTrack): Track {
@@ -66,6 +93,10 @@ function mapApiTrack(t: ApiTrack): Track {
     analysisStatus: t.analysisStatus as Track['analysisStatus'],
     analysisConfidence: t.analysisConfidence,
     userOverrides: {},
+    sourceUrl: t.sourceUrl,
+    sourceType: (t.sourceType as SourceType) || 'upload',
+    thumbnailUrl: t.thumbnailPath ? `${BASE_URL}/api/tracks/${t.id}/thumbnail` : undefined,
+    downloadStatus: (t.downloadStatus as DownloadStatus) || 'none',
   }
 }
 
@@ -143,5 +174,55 @@ export const api = {
     if (!response.ok) {
       throw new Error(`Failed to delete track: ${response.status}`)
     }
+  },
+
+  async importTracks(urls: string[]): Promise<{ tracks: Track[]; warnings: string[] }> {
+    const response = await fetch(`${BASE_URL}/api/tracks/import`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ urls }),
+    })
+
+    if (!response.ok) {
+      const err = await response.json().catch(() => ({ error: 'Import failed' }))
+      throw new Error(err.error || `Import failed: ${response.status}`)
+    }
+
+    const data: ImportResponse = await response.json()
+
+    // Map imported track stubs to Track objects with default values
+    const tracks: Track[] = data.tracks.map((t) => ({
+      serverId: t.id,
+      title: 'Downloading...',
+      artist: '',
+      bpm: 0,
+      bpmRaw: 0,
+      bpmCorrected: false,
+      key: '',
+      keyConfidence: 0,
+      energy: 0,
+      genrePrimary: '',
+      genreSecondary: null,
+      genreConfidence: 0,
+      duration: 0,
+      format: '',
+      bitrate: 0,
+      sampleRate: 0,
+      dateAdded: new Date(),
+      filename: '',
+      peaksUrl: '',
+      analysisStatus: 'queued' as const,
+      analysisConfidence: 0,
+      userOverrides: {},
+      sourceUrl: t.sourceUrl,
+      sourceType: t.sourceType as Track['sourceType'],
+      downloadStatus: 'queued' as const,
+    }))
+
+    return { tracks, warnings: data.warnings }
+  },
+
+  getTrackThumbnailUrl(trackId: string): string {
+    return `${BASE_URL}/api/tracks/${trackId}/thumbnail`
   },
 }

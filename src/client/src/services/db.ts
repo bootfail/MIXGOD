@@ -34,6 +34,11 @@ export interface TrackRecord {
   analysisStatus: string
   analysisConfidence: number
   userOverrides: Record<string, unknown>
+  // Import/download fields
+  sourceUrl?: string
+  sourceType?: string
+  thumbnailUrl?: string
+  downloadStatus?: string
 }
 
 export interface PlaylistRecord {
@@ -51,6 +56,11 @@ class MixGodDB extends Dexie {
   constructor() {
     super('MixGodDB')
     this.version(1).stores({
+      projects: '++id, name',
+      tracks: '++id, projectId, serverId',
+      playlists: '++id, projectId',
+    })
+    this.version(2).stores({
       projects: '++id, name',
       tracks: '++id, projectId, serverId',
       playlists: '++id, projectId',
@@ -85,6 +95,10 @@ export function trackToRecord(track: Track, projectId: number): Omit<TrackRecord
     analysisStatus: track.analysisStatus,
     analysisConfidence: track.analysisConfidence,
     userOverrides: track.userOverrides,
+    sourceUrl: track.sourceUrl,
+    sourceType: track.sourceType,
+    thumbnailUrl: track.thumbnailUrl,
+    downloadStatus: track.downloadStatus,
   }
 }
 
@@ -113,6 +127,10 @@ export function recordToTrack(record: TrackRecord): Track {
     analysisStatus: record.analysisStatus as Track['analysisStatus'],
     analysisConfidence: record.analysisConfidence,
     userOverrides: record.userOverrides,
+    sourceUrl: record.sourceUrl,
+    sourceType: (record.sourceType as Track['sourceType']) || 'upload',
+    thumbnailUrl: record.thumbnailUrl,
+    downloadStatus: (record.downloadStatus as Track['downloadStatus']) || 'none',
   }
 }
 

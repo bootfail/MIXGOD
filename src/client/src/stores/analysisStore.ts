@@ -63,15 +63,42 @@ export const useAnalysisStore = create<AnalysisStore>((set, get) => ({
       for (const trackId of ids) {
         try {
           const status = await api.getTrackStatus(trackId)
-          if (status.analysisStatus === 'done' || status.analysisStatus === 'error') {
-            onUpdate(trackId, status.analysisStatus, status.analysisResult)
-            if (status.analysisStatus === 'done') {
+
+          // Handle download status updates (downloading/queued tracks)
+          const dlStatus = status.downloadStatus
+          if (dlStatus && (dlStatus === 'queued' || dlStatus === 'downloading')) {
+            onUpdate(trackId, `download:${dlStatus}`, {
+              downloadStatus: dlStatus,
+              downloadProgress: status.downloadProgress,
+              downloadEta: status.downloadEta,
+            })
+            continue // Still downloading, keep polling
+          }
+
+          if (dlStatus === 'error') {
+            onUpdate(trackId, 'download:error', {
+              downloadStatus: 'error',
+              errorMessage: status.errorMessage,
+            })
+            get().markError(trackId)
+            continue
+          }
+
+          // Download done (or was never a download) -- check analysis status
+          const analysisStatus = status.analysisStatus ?? status.status
+          if (analysisStatus === 'done' || analysisStatus === 'error') {
+            onUpdate(trackId, analysisStatus, status.analysisResult ?? status)
+            if (analysisStatus === 'done') {
               get().markComplete(trackId)
             } else {
               get().markError(trackId)
             }
-          } else if (status.analysisStatus === 'analyzing') {
-            onUpdate(trackId, status.analysisStatus, null)
+          } else if (analysisStatus === 'analyzing' || analysisStatus === 'queued') {
+            // Also pass download done state if applicable
+            if (dlStatus === 'done') {
+              onUpdate(trackId, `download:done`, { downloadStatus: 'done' })
+            }
+            onUpdate(trackId, analysisStatus, null)
           }
         } catch {
           // Network error -- keep polling
