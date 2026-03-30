@@ -1,6 +1,6 @@
 import type { Track, SourceType, DownloadStatus } from '@/types/track'
 
-const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5000'
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:5267'
 
 export interface TrackStatusResponse {
   id: string
@@ -116,7 +116,8 @@ export const api = {
       throw new Error(`Upload failed: ${response.status} ${response.statusText}`)
     }
 
-    const tracks: ApiTrack[] = await response.json()
+    const data = await response.json()
+    const tracks: ApiTrack[] = data.tracks ?? data
     return tracks.map(mapApiTrack)
   },
 

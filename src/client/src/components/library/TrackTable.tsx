@@ -421,8 +421,9 @@ export function TrackTable() {
                   const row = rows[virtualRow.index]
                   const isSelected = row.original.serverId === selectedTrackId
                   return (
-                    <tr
+                    <div
                       key={row.id}
+                      role="row"
                       className={`absolute w-full flex ${
                         isSelected
                           ? 'bg-bg-elevated border-l-2 border-l-neon-cyan'
@@ -439,15 +440,16 @@ export function TrackTable() {
                       }}
                     >
                       {row.getVisibleCells().map((cell) => (
-                        <td
+                        <div
                           key={cell.id}
+                          role="cell"
                           className="px-2 py-1 flex items-center overflow-hidden"
                           style={{ width: cell.column.getSize(), minWidth: cell.column.getSize() }}
                         >
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </td>
+                        </div>
                       ))}
-                    </tr>
+                    </div>
                   )
                 })}
               </td>

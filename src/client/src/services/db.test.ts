@@ -116,7 +116,7 @@ describe('Database', () => {
       sourceType: 'youtube' as const,
       downloadStatus: 'done' as const,
       sourceUrl: 'https://youtube.com/watch?v=abc',
-      thumbnailUrl: 'http://localhost:5000/api/tracks/xyz/thumbnail',
+      thumbnailUrl: 'http://localhost:5267/api/tracks/xyz/thumbnail',
     }
 
     const record = trackToRecord(original, 1)
